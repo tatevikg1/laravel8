@@ -22,10 +22,16 @@
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('profile.index')" :active="route().current('profile.index')">
+                                    People
+                                </jet-nav-link>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('chat')" :active="route().current('chat')">
                                     Chat
                                 </jet-nav-link>
                             </div>
+                            
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -148,6 +154,11 @@
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </jet-responsive-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <jet-nav-link :href="route('profile.index')" :active="route().current('profile.index')">
+                            People
+                        </jet-nav-link>
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <jet-nav-link :href="route('chat')" :active="route().current('chat')">

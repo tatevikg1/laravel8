@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\ChatsController;
+use App\Http\Controllers\ProfilesController;
 
 
 Route::get('/', function () {
@@ -38,3 +39,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get  ('/conversation/{id}',  [ChatsController::class, 'getMessagesWithContact']);
     Route::post ('/conversation/send',  [ChatsController::class, 'send']);
 });
+
+Route::get('/people',        [ProfilesController::class, 'index'])->name('profile.index');

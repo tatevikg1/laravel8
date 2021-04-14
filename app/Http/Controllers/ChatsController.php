@@ -28,7 +28,7 @@ class ChatsController extends Controller
     public function contacts()
     {
         // get all contacts
-        $contacts = User::select(['id', 'name', 'email'])->where('id', '!=', auth()->id())->get();
+        $contacts = User::select(['id', 'name', 'email', 'profile_photo_path'])->where('id', '!=', auth()->id())->get();
 
         // get the count of unread messages group by contact
         $unreadMessagesId = Message::select(DB::raw("sender as sender, count(sender) as messages_count "))
