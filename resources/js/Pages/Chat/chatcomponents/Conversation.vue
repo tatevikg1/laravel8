@@ -12,8 +12,8 @@
 
 <script>
 
-    import Messages from "./conver/Messages";
-    import MessageComposer from "./conver/MessageComposer";
+    import Messages from "./Messages";
+    import MessageComposer from "./MessageComposer";
 
     export default{
 

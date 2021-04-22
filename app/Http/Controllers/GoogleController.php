@@ -33,7 +33,6 @@ class GoogleController extends Controller
 
             if ($finduser) {
                 Auth::login($finduser);
-
                 return redirect()->intended('dashboard');
             } else {
 

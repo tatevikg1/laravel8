@@ -29,11 +29,12 @@
                 setTimeout(()=>{
                     this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight;
                 }, 50);
-            }
+            },
+            
         },
 
         watch:{
-            messages(){
+            messages:function(){
                 this.scrollToBottom();
             },
 

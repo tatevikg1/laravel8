@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\ProfilesController;
-
+use Illuminate\Foundation\Application;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -22,16 +22,16 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-// google auth routes
-Route::get('auth/google',           [GoogleController::class, 'redirectToGoogle']);
-Route::get('auth/google/callback',  [GoogleController::class, 'handleGoogleCallback']);
+// google, facebook auth
+Route::prefix('auth')->group(function(){
+    Route::get('/google',           [GoogleController::class, 'redirectToGoogle']);
+    Route::get('/google/callback',  [GoogleController::class, 'handleGoogleCallback']);
+    Route::get('/facebook',         [FacebookController::class, 'redirectToFacebook']);
+    Route::get('/facebook/callback',[FacebookController::class, 'handleFacebookCallback']);
+});
 
-// facebook authentication routes
-Route::get('auth/facebook',         [FacebookController::class, 'redirectToFacebook']);
-Route::get('auth/facebook/callback',[FacebookController::class, 'handleFacebookCallback']);
-
-
-Route::middleware(['auth:sanctum'])->group(function () {
+// chat
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get  ('/chats',              [ChatsController::class, 'chatapp'])->name('chat');
     Route::post ('/chat/mark-as-read/', [ChatsController::class, 'markAsRead']);
     Route::post ('/messages/{message}', [ChatsController::class, 'setRead']);
@@ -40,4 +40,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post ('/conversation/send',  [ChatsController::class, 'send']);
 });
 
-Route::get('/people',        [ProfilesController::class, 'index'])->name('profile.index');
+Route::get('/people',   [ProfilesController::class, 'index'])->name('profile.index');
+
+// admin
+Route::middleware(['admin'])->prefix('admin')->group(function() {
+    Route::get('/',    [AdminController::class, 'index'])->name('admin.index');
+    Route::patch  ('/photo/{user}',   [AdminController::class, 'approvePhoto']);
+    Route::delete('/photo/{user}',    [AdminController::class, 'deletePhoto']);
+
+});

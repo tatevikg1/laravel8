@@ -19,9 +19,8 @@ class ProfilesController extends Controller
      * */ 
     public function index(Request $request)
     {    
-
         return Inertia::render('Profile/Index', [
-            'user'  => Auth::user(), 
+            'user'  => Auth::user('id', 'name', 'email', 'profile_photo_path'), 
             'parameter'  => $request->term,
             'users' => User::where( 'id', '!=', auth()->id() )
                 ->when($request->term, function($query, $term){
@@ -30,18 +29,6 @@ class ProfilesController extends Controller
                 ->select('id', 'name', 'email', 'profile_photo_path')
                 ->paginate(3)
         ]);
-
-        // return Inertia::render('Profile/Index', [
-        //     'user'  => Auth::user(), 
-        //     'parameter'  => $request->term,
-        //     'users' => User::when($request->term, function($query, $term){
-        //         $query->where('name', 'LIKE', '%' . $term . '%');
-        //     })
-        //     ->select('id', 'name', 'email')
-        //     ->addSelect('"profile_photo_path" WHERE avatar_approved=1')
-        //     ->where( 'id', '!=', auth()->id() )
-        //     ->paginate(3)
-        // ]);
     }
 
 }

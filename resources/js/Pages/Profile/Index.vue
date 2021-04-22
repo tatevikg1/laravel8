@@ -1,24 +1,22 @@
 <template>
-    <app-layout>
-        <!-- <template #header> -->
-            <div class="p-4">
+    <app-layout>        
+        <template #header>
+            <div class="search">
                 <label for="search">Search</label>
-                <input type="text" id="search" v-model="term" @input="search" class="ml-2 px-2 pu-1 text-sm rounded border">
-                
+                <input type="text" id="search" v-model="term" @input="search" class="ml-2 px-2 pu-1 text-sm rounded border"> 
             </div>
-        <!-- </template> -->
+        </template>
 
         <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8" v-if="users">
                 <ul v-for="user in users.data" :key="user.id">
-                    <hr>
                     <li>
                         <div class="image">
                             <img :src="user.profile_photo_url" :key="user.id"
                                 class="rounded-circle" style="max-width:100px" >
                         </div>
 
-                        <div class="contact">
+                        <div class="info">
                             <p class='name'> {{ user.name  }} </p>
                             <p> {{ user.email }} </p>
                         </div>
@@ -26,9 +24,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="p-5 flex justify-center">
-                <inertia-link class="px-2" :href="users.prev_page_url" v-if="users.prev_page_url">Previous</inertia-link>
-                <inertia-link class="px-2" :href="users.next_page_url" v-if="users.next_page_url">Next</inertia-link>
+            <div class="p-4 flex justify-center">
+                <Pagination :prev='users.prev_page_url' :next="users.next_page_url"/>
             </div>
         </div>
     </app-layout>
@@ -36,10 +33,16 @@
 
 <script>
     import AppLayout from '@/Layouts/AppLayout'
+    import Pagination from '@/Components/Pagination'
     import JetSectionBorder from '@/Jetstream/SectionBorder'
+    import { Inertia } from '@inertiajs/inertia'
 
     export default {
-        props: ['parameter', 'user', 'users'],
+        props: {
+            parameter:String, 
+            user: Object, 
+            users: Object
+        },
 
         data(){
             return {
@@ -49,7 +52,10 @@
 
         methods: {
             search(){
-                this.$inertia.replace(this.route('profile.index', {term: this.term}));
+                Inertia.visit(this.route('profile.index', {term:this.term}), {
+                    only:['users'], 
+                    preserveState: true,
+                })
             }
         },
 
@@ -60,11 +66,20 @@
         components: {
             AppLayout,
             JetSectionBorder,
+            Pagination,
         },
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped>     
+.search{
+    display: inline-block;
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    padding-top:0;
+}
+
 li{
     display:flex;
     padding:2px;
@@ -84,22 +99,23 @@ li{
             margin:0 auto;
         }
     }
+
+    .info{
+        flex:2;
+        font-size:12px;
+        display:flex;
+        overflow:hidden;
+        flex-direction:column;
+        justify-content:center;
+
+        p{
+            margin:0;
+        }
+        .name{
+            font-weight:bold;
+        }
+    }
 }
 
-.contact{
-    flex:2;
-    font-size:12px;
-    display:flex;
-    overflow:hidden;
-    flex-direction:column;
-    justify-content:center;
-
-    p{
-        margin:0;
-    }
-    .name{
-        font-weight:bold;
-    }
-}
 
 </style>

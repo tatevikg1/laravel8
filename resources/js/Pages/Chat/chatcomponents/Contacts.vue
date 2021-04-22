@@ -1,6 +1,6 @@
 <template>
-    <div class="contacts-list">
-        <ul>
+    <div class="contacts-list" ref="contacts">
+        <ul >
             <li v-for="contact  in sortedContacts"
                 :key="contact.id" :class="{ 'selected': contact == selected }"
                 @click="selectContact(contact)">
@@ -32,7 +32,7 @@
 
         data(){
             return{
-                selected: this.contacts.length ? this.contacts[0] : null
+                selected: this.contacts.length ? this.contacts[0] : null,
             };
         },
 
@@ -40,7 +40,14 @@
             selectContact(contact){
                 this.selected = contact;
                 this.$emit('selected', contact);
-            }
+                this.scrollTop();
+            },
+
+            scrollTop(){
+                setTimeout(()=>{
+                    this.$refs.contacts.scrollTop = 0;
+                }, 50);
+            },
         },
 
         computed: {

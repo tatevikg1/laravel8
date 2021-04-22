@@ -22,8 +22,8 @@
 
 <script>
     import AppLayout from '@/Layouts/AppLayout'
-    import Conversation from './chat/Conversation.vue';
-    import Contacts from './chat/Contacts.vue';
+    import Conversation from './chatcomponents/Conversation.vue'; 
+    import Contacts from './chatcomponents/Contacts.vue';
 
     export default{
 
@@ -38,6 +38,8 @@
                 selectedContact : null,
                 messages: [],
                 contacts: [],
+                newMessageSoundUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
+                selectContactSoundUrl : 'http://codeskulptor-demos.commondatastorage.googleapis.com/pang/pop.mp3'
             }
         },
 
@@ -66,6 +68,7 @@
                         this.messages = response.data;
                         this.selectedContact = contact;
                     })
+                this.playSound(this.selectContactSoundUrl);
             },
 
             saveNewMassage(message){
@@ -75,28 +78,36 @@
             handleIncoming(message){
 
                 if(this.selectedContact && message.sender.id == this.selectedContact.id){
- 
                     this.saveNewMassage(message);
                     axios.post(`/messages/${message.id}`)
                     return;
                 }
 
                 this.updateUnreadCount(message.sender, false);
+                // this.playSound(this.newMessageSoundUrl);
             },
 
-            updateUnreadCount(contact, zroyacnel){
-                this.contacts = this.contacts.map((single) =>{
-                    if (single.id != contact.id){
-                        return single;
+            updateUnreadCount(sender, zroyacnel){
+                this.contacts = this.contacts.map((contact) =>{
+                    if (contact.id != sender.id){
+                        return contact;
                     }
 
                     if(zroyacnel)
-                        single.unread = 0;
+                        contact.unread = 0;
                     else
-                        single.unread += 1;
-                    return single;
-                }
-            )}
+                        contact.unread += 1;
+                        console.log(contact.unread);
+
+                    return contact;
+                })
+            },
+
+            playSound(soundUrl) {
+                var audio = new Audio(soundUrl);
+                audio.play();
+            }
+
         },
 
         components:{ Conversation, Contacts , AppLayout}

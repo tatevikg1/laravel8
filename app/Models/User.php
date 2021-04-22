@@ -6,7 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\Features;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -28,6 +30,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'facebook_id'
     ];
 
     /**
@@ -59,4 +63,24 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Delete the user's profile photo.
+     *
+     * @return void
+     */
+    public function deleteProfilePhoto()
+    {
+        if (! Features::managesProfilePhotos()) {
+            return;
+        }
+
+        Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
+
+        $this->forceFill([
+            'profile_photo_path' => null,
+            'avatar_approved' => false,
+        ])->save();
+    }
+
 }
