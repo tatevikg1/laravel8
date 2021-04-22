@@ -8,9 +8,9 @@
         </template>
 
         <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8" v-if="users">
+            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8" v-if="users" >
                 <ul v-for="user in users.data" :key="user.id">
-                    <li>
+                    <li @click="visitUser(user.id)">
                         <div class="image">
                             <img :src="user.profile_photo_url" :key="user.id"
                                 class="rounded-circle" style="max-width:100px" >
@@ -56,7 +56,11 @@
                     only:['users'], 
                     preserveState: true,
                 })
-            }
+            },
+
+            visitUser(userId){
+                Inertia.get(this.route('profile.show', userId ) );
+            },
         },
 
         created(){

@@ -23,9 +23,8 @@ class AdminController extends Controller
             'user'  => Auth::user('id', 'name', 'email', 'profile_photo_path'),
             'parameter'  => $request->term,
             'users' => User::where( 'id', '!=', auth()->id() )
-                ->where('profile_photo_path', '!=', null)
+                ->where([['profile_photo_path', '!=', null], ['avatar_approved', false]])
                 ->select('id', 'name', 'email', 'profile_photo_path', 'avatar_approved')
-                ->orderBy('avatar_approved')
                 ->paginate(5)
         ]);
     }

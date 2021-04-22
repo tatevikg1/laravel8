@@ -40,12 +40,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post ('/conversation/send',  [ChatsController::class, 'send']);
 });
 
-Route::get('/people',   [ProfilesController::class, 'index'])->name('profile.index');
+Route::get('/people',             [ProfilesController::class, 'index'])->name('profile.index');
+Route::get('/profile/edit',       [ProfilesController::class, 'edit']) ->name('profile.edit');
+Route::get('/profile/{userId}',   [ProfilesController::class, 'show']) ->name('profile.show');
+
 
 // admin
 Route::middleware(['admin'])->prefix('admin')->group(function() {
-    Route::get('/',    [AdminController::class, 'index'])->name('admin.index');
-    Route::patch  ('/photo/{user}',   [AdminController::class, 'approvePhoto']);
-    Route::delete('/photo/{user}',    [AdminController::class, 'deletePhoto']);
-
+    Route::get('/',                 [AdminController::class, 'index'])->name('admin.index');
+    Route::patch  ('/photo/{user}', [AdminController::class, 'approvePhoto']);
+    Route::delete('/photo/{user}',  [AdminController::class, 'deletePhoto']);
 });
