@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -38,11 +39,15 @@ class ProfilesController extends Controller
 
     public function show($userId)
     {
-        $user = User::select('id', 'name', 'email', 'profile_photo_path')->where('id', $userId)->firstOrFail();
+        $user = User::query()
+            ->select('id', 'name', 'email', 'profile_photo_path')
+            ->where('id', $userId)
+            ->firstOrFail();
 
         return Inertia::render('Profile/Show', [
             'user'  => Auth::user('id', 'name', 'email', 'profile_photo_path'), 
             'profile' => $user,
+            'images' => $user->images,
         ]);
     }
 

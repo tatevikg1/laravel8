@@ -40,7 +40,8 @@
                 messages: [],
                 contacts: [],
                 newMessageSoundUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
-                selectContactSoundUrl : 'http://codeskulptor-demos.commondatastorage.googleapis.com/pang/pop.mp3'
+                // selectContactSoundUrl : 'http://codeskulptor-demos.commondatastorage.googleapis.com/pang/pop.mp3'
+                selectContactSoundUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
             }
         },
 
