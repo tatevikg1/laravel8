@@ -31,8 +31,19 @@ class ImageController extends Controller
         return redirect()->back();
     }
 
-    public function delete(Image $image)
+    public function delete(Request $request)
     {
+        $image = Image::find($request->image);
         $image->delete();
+        return redirect()->back();
+    }
+
+    public function togglePublic(Request $request)
+    {
+        $image = Image::find($request->image);
+        $image->public = !$image->public;
+        $image->save();
+        
+        return redirect()->back();
     }
 }

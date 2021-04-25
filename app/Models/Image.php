@@ -16,7 +16,8 @@ class Image extends Model
      */
     protected $fillable = [
         'path',
-        'user_id'
+        'user_id',
+        'public'
     ];
 
     public function user()
@@ -24,12 +25,10 @@ class Image extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function url()
-    {
-        $imagePath = ($this->path) ? $this->path : '/storage/Cmh94I30gcVAlbmMzJC4GLeAuDCa6Of2XCu1e3EO.jpeg';
+    // public function url()
+    // {
+    //     $imagePath = ($this->path) ? $this->path : '/storage/Cmh94I30gcVAlbmMzJC4GLeAuDCa6Of2XCu1e3EO.jpeg';
 
-        return '/storage/' . $imagePath;
-    }
-
-
+    //     return '/storage/' . $imagePath;
+    // }
 }

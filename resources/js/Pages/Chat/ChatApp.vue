@@ -39,9 +39,8 @@
                 selectedContact : null,
                 messages: [],
                 contacts: [],
-                newMessageSoundUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
-                // selectContactSoundUrl : 'http://codeskulptor-demos.commondatastorage.googleapis.com/pang/pop.mp3'
-                selectContactSoundUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
+                // newMessageSoundUrl: 'http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3',
+                selectContactSoundUrl : 'http://codeskulptor-demos.commondatastorage.googleapis.com/pang/pop.mp3'
             }
         },
 
@@ -98,7 +97,7 @@
                     if(zroyacnel)
                         contact.unread = 0;
                     else
-                        contact.unread += 1;
+                        contact.unread ++;
                         console.log(contact.unread);
 
                     return contact;

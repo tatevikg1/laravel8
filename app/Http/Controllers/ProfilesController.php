@@ -39,15 +39,25 @@ class ProfilesController extends Controller
 
     public function show($userId)
     {
-        $user = User::query()
+        $profile = User::query()
             ->select('id', 'name', 'email', 'profile_photo_path')
             ->where('id', $userId)
             ->firstOrFail();
+        
+        $authUser = Auth::user('id', 'name', 'email', 'profile_photo_path');
+
+        if($profile->id == $authUser->id){
+            return Inertia::render('Profile/Show', [
+                'user'  => $authUser, 
+                'profile' => $profile,
+                'images' => Image::where('user_id', $profile->id)->get(),
+            ]);
+        }
 
         return Inertia::render('Profile/Show', [
-            'user'  => Auth::user('id', 'name', 'email', 'profile_photo_path'), 
-            'profile' => $user,
-            'images' => $user->images,
+            'user'  => $authUser, 
+            'profile' => $profile,
+            'images' => Image::where([['user_id', $profile->id], ['public', true]])->get(),
         ]);
     }
 

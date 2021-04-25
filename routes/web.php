@@ -54,5 +54,6 @@ Route::prefix('profile')->group(function(){
 Route::prefix('photo')->group(function(){
     Route::post  ('/',      [ImageController::class, 'store']) ->name('image.store');
     Route::delete('/',      [ImageController::class, 'delete'])->name('image.delete');
+    Route::patch ('/',      [ImageController::class, 'togglePublic'])->name('image.togglePublic');
 });
 
